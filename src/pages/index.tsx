@@ -18,8 +18,8 @@ function Home() {
 
   const generateAudio = api.tts.generate.useMutation();
 
-  const handleGenerateAudio = () => {
-    generateAudio.mutate(
+  const handleGenerateAudio = async () => {
+    await generateAudio.mutateAsync(
       { model: selectedModel, text: inputText },
       {
         onSuccess: (data) => {
