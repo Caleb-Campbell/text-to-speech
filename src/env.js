@@ -8,7 +8,7 @@ export const env = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
-    OPENAI_KEY: z.string(),
+    OPENAI_API_KEY: z.string(),
     WATSON_KEY: z.string(),
     WATSON_URL: z.string(),
     GOOGLE_VOICE_KEY: z.string(),
@@ -30,7 +30,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    OPENAI_KEY: process.env.OPENAI_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_KEY,
     WATSON_KEY: process.env.WATSON_KEY,
     WATSON_URL: process.env.WATSON_URL,
     GOOGLE_VOICE_KEY: process.env.GOOGLE_VOICE_KEY,
