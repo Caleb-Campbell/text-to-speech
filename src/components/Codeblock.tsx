@@ -10,32 +10,60 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ selectedModel }) => {
     switch (selectedModel) {
       case "openai":
         return `const mp3 = await openai.audio.speech.create({
-  model: "tts-1",
-  voice: "alloy",
-  input: text,
-});`;
+          model: "tts-1",
+          voice: "alloy",
+          input: text,
+        });
+    
+        const buffer = Buffer.from(await mp3.arrayBuffer());
+        const audioUrl = 'data:audio/mp3;base64,{buffer.toString("base64")}';
+    
+        return audioUrl;`;
       case "watson":
-        return `const response = await axios.post(
-  \`\${url}/v1/synthesize?voice=en-US_AllisonV3Voice\`,
-  { text },
-  {
-    auth: {
-      username: "apikey",
-      password: apiKey!,
-    },
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "audio/ogg",
-    },
-    responseType: "arraybuffer",
-  },
-);`;
+        return `const apiKey = process.env.WATSON_KEY;
+        const url = process.env.WATSON_URL;
+    
+        const response = await axios.post(
+          {url}/v1/synthesize?voice=en-US_AllisonV3Voice,
+          { text },
+          {
+            auth: {
+              username: "apikey",
+              password: apiKey!,
+            },
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "audio/ogg",
+            },
+            responseType: "arraybuffer",
+          },
+        );
+    
+        const buffer = Buffer.from(response.data, "binary");
+        const audioUrl = data:audio/ogg;base64,{buffer.toString("base64")};
+    
+        return audioUrl;`;
       case "google":
-        return `const responses = await googleClient.synthesizeSpeech({
-  input: { text: text },
-  voice: { languageCode: "en-US", ssmlGender: "FEMALE" },
-  audioConfig: { audioEncoding: "MP3" },
-});`;
+        return `// THIS SHOULD WORK BASED ON THE GOOGLE DOCS BUT IT DOESN'T
+        try {
+          const responses = await googleClient.synthesizeSpeech({
+            input: { text: text },
+            voice: { languageCode: "en-US", ssmlGender: "FEMALE" },
+            audioConfig: { audioEncoding: "MP3" },
+          });
+          const response = responses[0];
+          const audioContent = response.audioContent as Buffer;
+    
+          const audioUrl = data:audio/mp3;base64,{audioContent.toString("base64")};
+    
+          return audioUrl;
+        } catch (error) {
+          console.error(
+            "Error generating audio with Google Text-to-Speech API:",
+            error,
+          );
+          throw new Error("Failed to generate audio");
+        }`;
       default:
         return "";
     }
