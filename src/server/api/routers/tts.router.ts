@@ -12,7 +12,12 @@ export const ttsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const audioUrl = await useTTSWithSelectedModel(input.model, input.text);
-      return { url: audioUrl };
+      try {
+        const audioUrl = await useTTSWithSelectedModel(input.model, input.text);
+        return { url: audioUrl };
+      } catch (error) {
+        console.error("Error generating audio:", error);
+        throw new Error("Failed to generate audio");
+      }
     }),
 });
