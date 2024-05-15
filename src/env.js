@@ -30,7 +30,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    OPENAI_API_KEY: process.env.OPENAI_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     WATSON_KEY: process.env.WATSON_KEY,
     WATSON_URL: process.env.WATSON_URL,
     GOOGLE_VOICE_KEY: process.env.GOOGLE_VOICE_KEY,
